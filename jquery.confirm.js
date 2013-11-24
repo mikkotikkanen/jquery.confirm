@@ -20,6 +20,8 @@
 	methods.confirm = function(message, callback, event) {
 		callback = callback || function() {};
 		message = message || 'Are you sure?';
+		
+		// Do the confirm dance
 		E.bg.show();
 		var result = confirm(message);
 		E.bg.hide();
@@ -56,17 +58,11 @@
 		}
 	}
 	
-	
-	
-	
-	
 	// JQuery confirm shorthand
-	$.fn.confirm = function(fnc) { this.on('confirm', fnc); }
-	
-	// Add automatic confirm handlers
-	$(document).ready(function() {
-		$('*[data-confirm]').click(function(e) { $.confirm($(this).data('confirm'), $(this), e); });
-	});
+	$.fn.confirm = function(fnc) {
+		this.click(function(e) { $.confirm($(this).data('confirm'), fnc, e); })
+	}
+
 	
 	// Create confirm background
 	var el = $('<div />');

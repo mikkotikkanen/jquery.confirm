@@ -5,8 +5,9 @@
 </head>
 <body>
 <h1>jquery.confirm</h1>
-<button id="btn1" data-confirm="Button 1 - Are you sure?">Confirm #1</button>
-<button id="btn2">Confirm #2</button>
+<button id="btn1">Confirm #1 (Default message)</button>
+<button id="btn2" data-confirm="Button 2 - Are you sure?">Confirm #2 (Custom message)</button>
+<button id="btn3">Confirm #3 (Javascript triggered custom message)</button>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <script src="../jquery.confirm.js"></script>
@@ -14,9 +15,12 @@
 	$('#btn1').confirm(function() {
 		alert('button 1, confirmed!');
 	});
-	$('#btn2').click(function() {
-		$.confirm('Button 2 - Are you really sure?', function() {
-			alert('button 2, confirmed!');
+	$('#btn2').confirm(function() {
+		alert('button 2, confirmed!');
+	});
+	$('#btn3').click(function() {
+		$.confirm('Button 3 - Are you really sure?', function() {
+			alert('button 3, confirmed!');
 		});
 	});
 </script>
