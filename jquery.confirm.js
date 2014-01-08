@@ -4,6 +4,8 @@
  * @version 1.0
  * @author Mikko Tikkanen <mikko.tikkanen@gmail.com>
  */
+/* jshint devel:true, browser: true */
+/* global jQuery */
 ;(function(window, document, $, undefined) {
 	var methods = {},	// Methods namespace
 		O = {},			// Options
@@ -45,7 +47,7 @@
 	 * ------------------------------------------------------------------------------------------ */
 	methods.set = function(key, value) {
 		O[key] = value;
-	}
+	};
 	
 	
 	/* Plugin base logic
@@ -56,12 +58,12 @@
 		} else {
 			return methods.confirm.apply(this, arguments);
 		}
-	}
+	};
 	
 	// JQuery confirm shorthand
 	$.fn.confirm = function(fnc) {
-		this.click(function(e) { $.confirm($(this).data('confirm'), fnc, e); })
-	}
+		this.click(function(e) { $.confirm($(this).data('confirm'), fnc, e); });
+	};
 
 	
 	// Create confirm background
@@ -77,7 +79,7 @@
 		opacity: 0.5,
 		zIndex: 9999
 	});
-	$('body').prepend(el)
+	$('body').prepend(el);
 	E.bg = el;
 	
 })(window, document, jQuery);
