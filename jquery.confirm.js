@@ -8,10 +8,7 @@
 /* global jQuery */
 ;(function(window, document, $, undefined) {
 	var methods = {},	// Methods namespace
-		O = {},			// Options
-		E = {			// Elements
-			bg: null
-		};
+		O = {};			// Options
 	
 	
 		
@@ -20,13 +17,25 @@
 	 * Shows the actual confirm dialog + background
 	 * ----------------------------------------------------------------------------------------- */
 	methods.confirm = function(message, callback, event) {
-		callback = callback || function() {};
+        if(typeof message == 'function') { callback = message; message = null; }
+        callback = callback || function() {};
 		message = message || 'Are you sure?';
 		
-		// Do the confirm dance
-		E.bg.show();
+        // Create confirm background & do the confirm dance
+        var el = $('<div />');
+        el.css({
+            position: 'fixed',
+            left: 0,
+            top: 0,
+            right: 0,
+            bottom: 0,
+            background: '#000',
+            opacity: 0.5,
+            zIndex: 9999
+        });
+        $('body').prepend(el);
 		var result = confirm(message);
-		E.bg.hide();
+		el.remove();
 		
 		// Declined
 		if(result !== true) {
@@ -34,12 +43,11 @@
 			return;
 		}
 		
-		// Accepted - Trigger confirm event or run callback
-		if(typeof callback == 'object') {
-			callback.trigger('confirm');
-		} else {
-			callback();
-		}
+        // Accepted - Run callback and trigger confirm event when called to element
+        callback();
+        if(typeof this == 'object') {
+            $(this).trigger('confirm');
+        }
 	};
 	
 	
@@ -60,27 +68,25 @@
 		}
 	};
 	
+    
+    
 	// JQuery confirm shorthand
 	$.fn.confirm = function(fnc) {
-		this.click(function(e) { $.confirm($(this).data('confirm'), fnc, e); });
+		this.click(function(e) { $.confirm.call(this, $(this).data('confirm'), fnc, e); });
 	};
+    
+    // Hook to $.fn.on, to handle 'confirm' bindings
+    var originalOn = $.fn.on;
+    $.fn.on = function(type) {
+        // When confirm event is bound, also bind click event to fire the confirm dialog
+        if(type == 'confirm') {
+            var args = [].slice.call(arguments, 0);
+            args[0] = 'click';
+            args[args.length-1] = function(e) { $.confirm.call(this, ($(e.target).closest('[data-confirm]').data('confirm') || '')); };
+            originalOn.apply(this, args);
+        }
+        return originalOn.apply(this, arguments);
+    };
 
-	
-	// Create confirm background
-	var el = $('<div />');
-	el.css({
-		display: 'none',
-		position: 'fixed',
-		left: 0,
-		top: 0,
-		right: 0,
-		bottom: 0,
-		background: '#000',
-		opacity: 0.5,
-		zIndex: 9999
-	});
-	$('body').prepend(el);
-	E.bg = el;
-	
 })(window, document, jQuery);
 
