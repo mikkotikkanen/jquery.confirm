@@ -13,6 +13,9 @@ jQuery plugin for simple confirmations
 $('#btn1').confirm(function() {
 	// User confirmed, do something
 });
+$('#btn1').on('confirm', function() {
+	// User confirmed, do something
+});
 ```
 
 You can set custom messages with `data-confirm` property.
