@@ -25,7 +25,7 @@ You can set custom messages with `data-confirm` property.
 
 jQuery.confirm can also be used directly from Javascript:
 ```javascript
-$.confirm('Button 3 - Are you really sure?', function() {
+$.confirm('Are you really sure you want to do this?', function() {
 	// User confirmed, do something
 });
 ```
