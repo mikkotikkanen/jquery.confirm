@@ -20,7 +20,7 @@
         if(typeof message == 'function') { callback = message; message = null; }
         callback = callback || function() {};
 		message = message || 'Are you sure?';
-		
+        
         // Create confirm background & do the confirm dance
         var el = $('<div />');
         el.css({
@@ -38,10 +38,7 @@
 		el.remove();
 		
 		// Declined
-		if(result !== true) {
-			if(event) { event.preventDefault(); }
-			return;
-		}
+		if(result !== true) { return; }
 		
         // Accepted - Run callback and trigger confirm event when called to element
         callback();
@@ -72,7 +69,10 @@
     
 	// JQuery confirm shorthand
 	$.fn.confirm = function(fnc) {
-		this.click(function(e) { $.confirm.call(this, $(this).data('confirm'), fnc, e); });
+		this.click(function(e) {
+            e.preventDefault();
+            $.confirm.call(this, $(this).data('confirm'), fnc, e);
+        });
 	};
     
     // Hook to $.fn.on, to handle 'confirm' bindings
@@ -82,7 +82,10 @@
         if(type == 'confirm') {
             var args = [].slice.call(arguments, 0);
             args[0] = 'click';
-            args[args.length-1] = function(e) { $.confirm.call(this, ($(e.target).closest('[data-confirm]').data('confirm') || '')); };
+            args[args.length-1] = function(e) {
+                e.preventDefault();
+                $.confirm.call(this, ($(e.target).closest('[data-confirm]').data('confirm') || ''));
+            };
             originalOn.apply(this, args);
         }
         return originalOn.apply(this, arguments);
