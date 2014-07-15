@@ -16,7 +16,7 @@
 	 *
 	 * Shows the actual confirm dialog + background
 	 * ----------------------------------------------------------------------------------------- */
-	methods.confirm = function(message, callback, event) {
+	methods.confirm = function(message, callback, e) {
         if(typeof message == 'function') { callback = message; message = null; }
         callback = callback || function() {};
 		message = message || 'Are you sure?';
@@ -38,7 +38,7 @@
 		el.remove();
 		
 		// Declined
-		if(result !== true) { return; }
+		if(result !== true) { e.preventDefault(); return; }
 		
         // Accepted - Run callback and trigger confirm event when called to element
         callback();
@@ -90,6 +90,11 @@
         }
         return originalOn.apply(this, arguments);
     };
+	
+	
+	// Add automatic confirm handlers
+	$(document).ready(function() {
+ 		$('[data-confirm]').click(function(e) { $.confirm.call(this, $(this).data('confirm'), null, e); });
+ 	});
 
 })(window, document, jQuery);
-
