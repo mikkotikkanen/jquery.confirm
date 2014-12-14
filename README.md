@@ -33,7 +33,7 @@ You can set custom messages with `data-confirm` property.
 
 You can also use the custom messages to quickly add confirmations to links, as the jquery.confirm will cancel the default action if no is answered, thus preventing the link from working.
 ```html
-<a href="someothersite.com" data-confirm="Are you sure you want to go to someothersite.com?">SomeOtherSite.com</button>
+<a href="someothersite.com" data-confirm="Are you sure you want to leave?">SomeOtherSite.com</button>
 ```
 
 jQuery.confirm can also be used directly from Javascript:
